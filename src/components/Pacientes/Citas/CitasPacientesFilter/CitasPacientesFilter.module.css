@@ -1,0 +1,89 @@
+.panelControl {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.contenedorControles {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.contenedorBusqueda {
+  flex: 1;
+  min-width: 250px;
+}
+
+.iconoBoton {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.inputBusqueda {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.inputBusqueda:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.selectFiltro {
+  min-width: 180px;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  font-size: 0.95rem;
+  background-color: white;
+  cursor: pointer;
+}
+
+.selectFiltro:focus {
+  outline: none;
+  border-color: #004c79;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.botonAgendar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: rgb(51, 112, 148);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.botonAgendar:hover {
+  background-color: #004c79;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .panelControl {
+    padding: 1rem;
+  }
+
+  .contenedorControles {
+    flex-direction: column;
+  }
+
+  .contenedorBusqueda,
+  .selectFiltro,
+  .botonAgendar {
+    width: 100%;
+  }
+}

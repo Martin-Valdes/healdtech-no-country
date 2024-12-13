@@ -1,0 +1,172 @@
+.consultaItem {
+  padding: 1.25rem;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: white;
+}
+
+.consultaItem:last-child {
+  border-bottom: none;
+}
+
+.pacienteHeader {
+  justify-content: space-between;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.pacienteIcon {
+  width: 32px;
+  height: 32px;
+  background: #3b82f6;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.pacienteInfo {
+  flex: 1;
+}
+
+.pacienteNombre {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.nombreTexto {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.especialidadTexto {
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+.statusBadge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.alta {
+  background: #fef2f2;
+  border: 1px solid #fee2e2;
+  color: #dc2626;
+}
+
+.media {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  color: #c2410c;
+}
+.baja {
+  background: #f0fdf4;
+  border: 1px solid #d1fae5;
+  color: #10b981;
+}
+.urgente {
+  background: #fef2f2;
+  border: 1px solid #fee2e2;
+  color: #dc2626;
+}
+
+.symptoms {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #dc2626;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+.consultaMetadata {
+  color: #64748b;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+.metadataRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.metadataRow svg {
+  min-width: 16px;
+  color: #64748b;
+}
+
+.preferencia {
+  margin-left: 1rem;
+}
+
+.consultaActions {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.btnGeneral {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btnAsignar {
+  color: #10b981;
+  background: #f0fdf4;
+  border: 1px solid #d1fae5;
+}
+
+.btnAsignar:hover {
+  background: #10b981;
+  color: white;
+  border-color: #10b981;
+}
+
+.btnLlamar {
+  color: #3b82f6;
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+}
+
+.btnLlamar:hover {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+@media (max-width: 768px) {
+  .pacienteHeader {
+    display: inline-block;
+    align-items: center !important;
+  }
+
+  .consultaItem {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .btnGeneral {
+    margin-top: 1rem;
+    width: 100%;
+    justify-content: center;
+  }
+}

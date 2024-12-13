@@ -1,0 +1,126 @@
+.panel {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+}
+
+.titulo {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 1rem;
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.accionItem {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  gap: 1rem;
+  transition: transform 0.2s ease;
+}
+
+.accionItem:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.tiempo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 80px;
+}
+
+.fecha {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.hora {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.contenido {
+  flex: 1;
+}
+
+.headerAccion {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.paciente {
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+.badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+/* Badge de próximas acciones  */
+
+.badgeseguimiento {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.badgeurgente {
+  background: #fee2e2;
+  color: #dc2626;
+}
+/*  */
+.descripcion {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.completarBtn {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: none;
+  background: #3b82f6;
+  color: white;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.completarBtn:hover {
+  background: #2563eb;
+}
+
+@media (max-width: 640px) {
+  .accionItem {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tiempo {
+    flex-direction: row;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .completarBtn {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+}

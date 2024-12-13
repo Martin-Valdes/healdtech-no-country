@@ -1,0 +1,182 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 480px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.modalHeader {
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.headerContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.headerContent h2 {
+  font-size: 1.1rem;
+  margin: 0;
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.disponibilidad {
+  font-size: 0.85rem;
+  color: #4b5563;
+}
+
+.closeButton {
+  border: none;
+  background: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #9ca3af;
+  padding: 4px;
+}
+
+.modalBody {
+  padding: 16px;
+}
+
+.timeGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.timeSlot {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px;
+  transition: all 0.2s;
+}
+.timeSlot.disponible {
+  background: #f0fdf4;
+  border-color: #dcfce7;
+}
+
+.disponibleText {
+  color: #16a34a;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+  padding: 4px 0;
+}
+
+.timeSlot.ocupado {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+.timeHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+
+.time {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.tipoBadge {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.online {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.presencial {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.consultaInfo {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.prioridad {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
+  width: fit-content;
+}
+
+.alta {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.media {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.baja {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.paciente {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.motivo {
+  font-size: 0.8rem;
+  color: #64748b;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .timeGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .modalContent {
+    width: 95%;
+    max-width: none;
+    margin: 10px;
+  }
+}

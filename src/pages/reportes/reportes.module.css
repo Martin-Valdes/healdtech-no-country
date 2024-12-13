@@ -1,0 +1,22 @@
+.reporteContainer {
+  padding: 2rem;
+  background: linear-gradient(135deg, #f6f8ff 0%, #f0f4ff 100%);
+  min-height: 100vh;
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+/* Media Queries */
+@media (max-width: 1280px) {
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 480px) {
+  .reporteContainer {
+    padding: 0.75rem;
+  }
+}

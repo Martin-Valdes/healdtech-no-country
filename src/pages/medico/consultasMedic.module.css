@@ -1,0 +1,73 @@
+.consultasContainer {
+  padding: 2rem;
+  background: linear-gradient(135deg, #f6f8ff 0%, #f0f4ff 100%);
+  min-height: 100vh;
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 2rem;
+}
+
+.listSection {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 1.5rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Estadísticas */
+.statsWrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Lista de Consultas */
+.listSection {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 1.5rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  overflow: auto;
+}
+
+.listHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+
+/* Media Queries */
+@media (max-width: 1280px) {
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .statsWrapper {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
+}
+
+@media (max-width: 768px) {
+  .listHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+@media (max-width: 480px) {
+  .consultasContainer {
+    padding: 0.75rem;
+  }
+
+  .statsWrapper {
+    grid-template-columns: 1fr;
+  }
+}}

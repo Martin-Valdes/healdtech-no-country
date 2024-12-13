@@ -1,0 +1,76 @@
+.configCard {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 1.75rem;
+  border-radius: 20px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  height: 100%;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.cardIcon {
+  min-width: 40px;
+  height: 40px;
+  background: #eff6ff;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(51, 112, 148);
+  font-size: 1.5rem;
+  padding: 10px;
+}
+
+.cardHeader h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  color: #1e293b;
+}
+
+.cardHeader p {
+  color: #64748b;
+  font-size: 0.875rem;
+  margin: 0.25rem 0 0 0;
+}
+
+.formGroup {
+  margin-bottom: 1.25rem;
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.formGroup:last-child {
+  margin-bottom: 0;
+}
+
+.checkOption {
+  padding: 0.5rem 0;
+}
+
+.checkOption .form-check {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  gap: 1rem;
+}
+
+.checkOption .form-check-input {
+  margin: 0;
+  width: 3.5rem;
+  height: 1.75rem;
+  cursor: pointer;
+}
+
+.checkOption .form-check-label {
+  font-weight: 500;
+  color: #1e293b;
+  cursor: pointer;
+}

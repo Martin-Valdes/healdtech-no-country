@@ -1,0 +1,100 @@
+.contenedorEstadisticas {
+  display: flex;
+  justify-content: space-around;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.cardEstadistica {
+  text-align: center;
+  border-radius: 1rem;
+  background: #fff;
+  padding: 2.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  flex-wrap: wrap;
+  width: 100%;
+  min-width: 120px;
+}
+
+.iconoContainer {
+  background-color: #ffff;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icono {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: currentColor;
+  opacity: 1;
+}
+
+.estadisticaInfo {
+  flex: 1;
+}
+
+.estadisticaInfo h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: #1e293b;
+  line-height: 1;
+}
+
+.label {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0.25rem 0;
+  opacity: 1;
+}
+
+/* Variantes de color */
+.cardAzul {
+  color: #2563eb;
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.1);
+}
+
+.cardVioleta {
+  color: #7c3aed;
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.1);
+}
+
+.cardVerde {
+  color: #10b981;
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.1);
+}
+
+/* Hover effects */
+.cardEstadistica:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .contenedorEstadisticas {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .cardEstadistica {
+    padding: 1rem;
+    width: auto;
+  }
+  .iconoContainer {
+    padding: 0.5rem;
+  }
+
+  .estadisticaInfo h3 {
+    font-size: 1.5rem;
+  }
+
+  .label {
+    font-size: 0.75rem;
+  }
+}

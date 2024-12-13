@@ -1,0 +1,253 @@
+.tarjetaCita {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #edf2f7;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  height: fit-content;
+}
+
+.tarjetaCita:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+}
+
+.contenidoCita {
+  padding: 20px;
+}
+
+.cabeceraTarjeta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.badgevirtual {
+  background-color: #ebf5ff;
+  color: #2563eb;
+}
+
+.badgepresencial {
+  background-color: #f3e8ff;
+  color: #7c3aed;
+}
+
+.badgeconfirmada {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.badgependiente {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.textoIcono {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+/* Info Doctor */
+.infoDoctor {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.imagenDoctor {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.datosDoctor {
+  flex: 1;
+}
+
+.nombreDoctor {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+.especialidadDoctor {
+  color: #64748b;
+  font-size: 0.875rem;
+  margin: 0.25rem 0 0 0;
+}
+
+/* Detalles de la Cita */
+.detallesCita {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 0;
+}
+
+.itemDetalle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* Sección de Instrucciones */
+.seccionInstrucciones {
+  margin-top: 16px;
+  transition: all 0.3s ease;
+}
+
+.divisor {
+  height: 1px;
+  background: #e2e8f0;
+  margin: 12px 0;
+}
+
+.instruccionesTexto {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background-color: #f8fafc;
+  border-radius: 8px;
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+/* Acciones */
+.contenedorAcciones {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-top: 1px solid #edf2f7;
+  margin-top: auto;
+}
+
+.botonDetalle {
+  padding: 8px 16px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  color: #64748b;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.botonDetalle.activo {
+  background: #f8fafc;
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
+.botonUnirse {
+  padding: 8px 16px;
+  background: rgb(51, 112, 148);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.botonCancelar {
+  padding: 8px 16px;
+  border: 1px solid #ef4444;
+  background: white;
+  color: #ef4444;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.botonReprogramar {
+  padding: 8px 16px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  color: #004c79;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.botonReprogramar:hover {
+  background: rgba(51, 112, 148, 0.1);
+}
+/* Hover states */
+.botonDetalle:hover {
+  background: #f8fafc;
+}
+
+.botonUnirse:hover {
+  background: #004c79;
+}
+
+.botonCancelar:hover {
+  background: #fef2f2;
+}
+
+/* Notificaciones */
+.notificacion {
+  background-color: #ef4444;
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
+  min-width: 1.5rem;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .contenidoCita {
+    padding: 16px;
+  }
+
+  .contenedorAcciones {
+    grid-template-columns: 1fr;
+    padding: 12px 16px;
+  }
+
+  .nombreDoctor {
+    font-size: 1rem;
+  }
+
+  .especialidadDoctor {
+    font-size: 0.8125rem;
+  }
+
+  .itemDetalle {
+    font-size: 13px;
+  }
+}

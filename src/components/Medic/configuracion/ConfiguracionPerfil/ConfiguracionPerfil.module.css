@@ -1,0 +1,121 @@
+/* Disposición */
+.configCard {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.cardContent {
+  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 2rem;
+}
+
+/* Tipografía */
+.cardHeader p {
+  color: #64748b;
+  font-size: 0.875rem;
+  margin: 0.25rem 0 0 0;
+}
+
+/* Iconos */
+.cardIcon {
+  width: 24px;
+  height: 24px;
+  color: #0d6efd;
+}
+
+.avatarIcon {
+  color: white;
+  font-size: 1.5rem;
+}
+
+/* Avatar */
+.avatarSection {
+  text-align: center;
+}
+
+.avatarContainer {
+  width: 150px;
+  height: 150px;
+  margin: 0 auto 1rem;
+  position: relative;
+  cursor: pointer;
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 2.5rem;
+  font-weight: 600;
+}
+
+.formSection {
+  display: grid;
+  gap: 1rem;
+}
+
+/* Elementos del formulario */
+.formGroup {
+  margin-bottom: 1.25rem;
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.formGroup label {
+  display: block;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Elementos de interfaz */
+.badge {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  background: #dbeafe;
+  color: rgb(51, 112, 148);
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-top: 0.75rem;
+}
+
+.actionButton {
+  background: rgb(51, 112, 148);
+  color: white;
+  border: none;
+  padding: 0.875rem;
+  border-radius: 12px;
+  font-weight: 600;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  transition: all 0.2s ease;
+  margin: 1.5rem 0;
+}
+
+.actionButton:hover {
+  background: #004c79;
+  transform: translateY(-2px);
+}

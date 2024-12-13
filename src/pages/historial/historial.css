@@ -1,0 +1,26 @@
+
+.custom-scroll::-webkit-scrollbar {
+    width: 8px; /* Ancho de la barra */
+  }
+  
+  .custom-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Fondo del track */
+    border-radius: 10px; /* Bordes redondeados */
+  }
+  
+  .custom-scroll::-webkit-scrollbar-thumb {
+    background: #004C79; /* Color de la barra */
+    border-radius: 10px; /* Bordes redondeados */
+    border: 2px solid #ffffff; /* Borde blanco */
+  }
+  
+  .custom-scroll::-webkit-scrollbar-thumb:hover {
+    background: #002c4c; /* Color más oscuro al hacer hover */
+  }
+  
+  /* Compatibilidad con Firefox */
+  .custom-scroll {
+    scrollbar-color: #004C79 #f1f1f1;
+    scrollbar-width: thin;
+  }
+  

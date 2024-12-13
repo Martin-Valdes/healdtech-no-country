@@ -1,0 +1,78 @@
+.disponibilidad {
+  padding: 1.5rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.disponibilidadTitle {
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.semanaGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.diaItem {
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.diaItem:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.diaHeader {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.5rem;
+}
+
+.nombreDia {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.fecha {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.espaciosInfo {
+  font-size: 0.875rem;
+  color: #475569;
+  margin-bottom: 0.5rem;
+}
+
+.progressBar {
+  height: 4px;
+  background: #e2e8f0;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .semanaGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .semanaGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

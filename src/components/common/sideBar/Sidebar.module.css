@@ -1,0 +1,40 @@
+.sidebar {
+  width: 250px;
+  background-color: #004c79;
+  color: #e3e3e3;
+  flex-shrink: 0;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  overflow-y: auto;
+}
+
+.avatar-container {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-outline-primary {
+  color: white !important;
+  padding: 0.5rem 1rem;
+}
+
+.btn-outline-primary:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border-radius: 4px;
+}
+
+.btn-outline-primary.active {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  border-radius: 4px;
+}
+
+.badge {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}

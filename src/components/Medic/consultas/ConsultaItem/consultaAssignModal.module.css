@@ -1,0 +1,260 @@
+/* Overlay del modal - fondo oscuro */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 1000;
+}
+
+/* Contenedor principal del modal */
+.modalContent {
+  background: #ffffff;
+  border: 1px solid #e4e4e4;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 32rem;
+}
+
+/* Header del modal */
+.modalHeader {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e4e4e4;
+}
+
+.modalHeader h2 {
+  font-weight: 600;
+  color: #404040;
+  margin: 0;
+}
+
+/* Botón de cerrar */
+.closeButton {
+  background: none;
+  border: none;
+  color: #606060;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.closeButton:hover {
+  color: #404040;
+}
+
+/* Contenido principal */
+.modalBody {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Info del paciente */
+.patientInfo {
+  background: #f8f8f8;
+  border: 1px solid #e4e4e4;
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.patientName {
+  font-weight: 500;
+  color: #404040;
+  margin: 0;
+}
+
+.specialty {
+  color: #606060;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* Grupos de formulario */
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formGroup label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #404040;
+  font-weight: 500;
+}
+
+/* Inputs y selects */
+.formGroup input,
+.formGroup select {
+  width: 100%;
+  padding: 0.625rem;
+  border: 1px solid #e4e4e4;
+  border-radius: 6px;
+  color: #404040;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.formGroup input:focus,
+.formGroup select:focus {
+  outline: none;
+  border-color: #4285f4;
+}
+
+/* Iconos generales */
+.icon {
+  color: #606060;
+}
+
+/* Sección de Google Meet */
+.meetSection {
+  background: rgba(66, 133, 244, 0.1);
+  border: 1px solid rgba(66, 133, 244, 0.2);
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.meetHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.meetTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: #4285f4;
+}
+
+/* Detalles de la reunión */
+.meetDetails {
+  font-size: 0.875rem;
+  color: #404040;
+}
+
+.meetLink {
+  color: #4285f4;
+  text-decoration: none;
+  word-break: break-all;
+  display: inline-block;
+  margin-top: 0.25rem;
+}
+
+.meetLink:hover {
+  text-decoration: underline;
+}
+
+.meetPlaceholder {
+  color: #606060;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Botón de generar link */
+.generateButton {
+  padding: 0.5rem 1rem;
+  background: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.generateButton:hover {
+  background: #3367d6;
+}
+
+.generateButton:disabled {
+  background: #93c5fd;
+  cursor: not-allowed;
+}
+
+/* Animación de carga */
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Mensaje de error */
+.errorMessage {
+  color: #dc2626;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+/* Footer del modal */
+.modalFooter {
+  padding: 1rem;
+  display: flex;
+  gap: 1rem;
+  border-top: 1px solid #e4e4e4;
+}
+
+/* Botones del footer */
+.cancelButton,
+.confirmButton {
+  flex: 1;
+  padding: 0.625rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.cancelButton {
+  background: #ffffff;
+  border: 1px solid #e4e4e4;
+  color: #606060;
+}
+
+.cancelButton:hover {
+  background: #f8f8f8;
+  color: #404040;
+}
+
+.confirmButton {
+  background: #4285f4;
+  border: 1px solid #4285f4;
+  color: white;
+}
+
+.confirmButton:hover {
+  background: #3367d6;
+}
+
+.confirmButton:disabled {
+  background: #93c5fd;
+  border-color: #93c5fd;
+  cursor: not-allowed;
+}

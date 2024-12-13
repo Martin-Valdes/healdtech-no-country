@@ -1,0 +1,131 @@
+.statBox {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 1.75rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.statBox:hover {
+  transform: translateY(-5px);
+}
+
+.statBoxIcon {
+  width: 48px;
+  height: 48px;
+  background: #eff6ff;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #3b82f6;
+  font-size: 1.5rem;
+}
+
+.statBoxContent {
+  flex: 1;
+}
+
+.statBoxLabel {
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+.statBoxNumber {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0.25rem 0;
+}
+
+.statBoxTrend {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #059669;
+  font-size: 0.875rem;
+}
+
+.progressIndicator {
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 3px;
+  margin-top: 0.5rem;
+  overflow: hidden;
+}
+
+.progressValue {
+  height: 100%;
+  background: #3b82f6;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+/* responsive */
+/* Media Queries */
+@media (max-width: 1280px) {
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .statsWrapper {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .headerStats {
+    margin-top: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .listHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .filterContainer {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+  }
+  .consultaActions {
+    justify-content: center;
+  }
+  .consultaItem {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .consultaTime {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .summaryGrid {
+    grid-template-columns: 1fr;
+  }
+  .consultaActions {
+    flex-direction: row;
+  }
+}
+
+@media (max-width: 480px) {
+  .consultasContainer {
+    padding: 1rem;
+  }
+
+  .statsWrapper {
+    grid-template-columns: 1fr;
+  }
+}
