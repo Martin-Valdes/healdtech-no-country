@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   RiVideoLine,
   RiHospitalLine,
@@ -7,18 +8,21 @@ import {
   RiInformationLine,
   RiFileList3Line,
   RiCalendarEventLine,
-} from 'react-icons/ri'
-import { Cita, CitaActualizada } from '../../../../types/citas.type'
-import styles from './CitaPacienteTarjeta.module.css'
-import { useEffect, useState } from 'react'
-import ReprogramarCitaModal from '../ReprogramarCitaModal/ReprogramarCitaModal'
+} from "react-icons/ri";
+import { Appointment } from "../../../../types/patient.types";
+import { useAuthStore } from "../../../../store/useAuth";
+import { patientDashboardApi } from "../../../../api/patient/dashboard.api";
+import { Cita, CitaActualizada } from "../../../../types/citas.type";
+import ReprogramarCitaModal from "../ReprogramarCitaModal/ReprogramarCitaModal";
+
+import styles from "./CitaPacienteTarjeta.module.css";
 
 interface TarjetaCitaProps {
-  cita: Cita
-  seleccionada: boolean
-  onSeleccionar: () => void
-  onReprogramar: (citaActualizada: CitaActualizada) => void
-  onCancelar: (citaId: number) => void
+  cita: Appointment;
+  seleccionada: boolean;
+  onSeleccionar: () => void;
+  onReprogramar: (citaActualizada: CitaActualizada) => void;
+  onCancelar: (citaId: number) => void;
 }
 
 const CitaPacienteTarjeta = ({
@@ -29,65 +33,74 @@ const CitaPacienteTarjeta = ({
   onCancelar,
 }: TarjetaCitaProps) => {
   // variables
-  const [modalAbierto, setModalAbierto] = useState(false)
-  const [puedeUnirse, setPuedeUnirse] = useState(false)
-  //
-  const fechaCita = new Date(cita.fecha)
+  const [modalAbierto, setModalAbierto] = useState(false);
+  const [puedeUnirse, setPuedeUnirse] = useState(false);
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const { id } = useAuthStore();
+
+  const fechaCita = new Date(cita.fecha);
   // Función para verificar el tiempo
   const verificarTiempoCita = () => {
-    const ahora = new Date()
+    const ahora = new Date();
     // Obtener tiempo en minutos para ambas fechas
-    const tiempoActual = ahora.getHours() * 60 + ahora.getMinutes()
-    const tiempoCita = fechaCita.getHours() * 60 + fechaCita.getMinutes()
+    const tiempoActual = ahora.getHours() * 60 + ahora.getMinutes();
+    const tiempoCita = fechaCita.getHours() * 60 + fechaCita.getMinutes();
 
     // Verificar si es el mismo día
     const esMismoDia =
       ahora.getDate() === fechaCita.getDate() &&
       ahora.getMonth() === fechaCita.getMonth() &&
-      ahora.getFullYear() === fechaCita.getFullYear()
+      ahora.getFullYear() === fechaCita.getFullYear();
 
     // Diferencia en minutos
-    const diferenciaMinutos = Math.abs(tiempoCita - tiempoActual)
+    const diferenciaMinutos = Math.abs(tiempoCita - tiempoActual);
 
     // Permitir unirse 5 minutos antes y hasta 20 minutos después
-    return esMismoDia && diferenciaMinutos <= 20
-  }
+    return esMismoDia && diferenciaMinutos <= 20;
+  };
   // Función para cancelar cita
-  const handleCancelar = () => {
-    onCancelar(cita.id)
-  }
+  const handleCancelar = (id) => {
+    onCancelar(cita.id);
+  };
 
   // reprogramar cita
   const handleReprogramar = (citaActualizada: CitaActualizada) => {
     if (onReprogramar) {
-      onReprogramar(citaActualizada)
+      onReprogramar(citaActualizada);
     }
-  }
+  };
   useEffect(() => {
     // Verificación inicial
-    setPuedeUnirse(verificarTiempoCita())
+
+    const dataCites = patientDashboardApi.getPatientAppointments(id);
+
+    console.log(dataCites);
+    setAppointments(dataCites);
+
+    setPuedeUnirse(verificarTiempoCita());
 
     // Actualizar cada minuto
     const interval = setInterval(() => {
-      setPuedeUnirse(verificarTiempoCita())
-    }, 60000)
+      setPuedeUnirse(verificarTiempoCita());
+    }, 60000);
 
     // Limpiar intervalo
-    return () => clearInterval(interval)
+    return () => clearInterval(interval);
     //
-  }, [cita.fecha])
+  }, [cita.date]);
 
+  console.log(cita);
   return (
     <>
       <div
         className={`${styles.tarjetaCita} ${
-          seleccionada ? styles.expandida : ''
+          seleccionada ? styles.expandida : ""
         }`}
       >
         <div className={styles.contenidoCita}>
           <div className={styles.cabeceraTarjeta}>
             <span className={`${styles.badge} ${styles[`badge${cita.tipo}`]}`}>
-              {cita.tipo === 'virtual' ? (
+              {cita.tipo === "virtual" ? (
                 <span className={styles.textoIcono}>
                   <RiVideoLine /> Virtual
                 </span>
@@ -100,20 +113,20 @@ const CitaPacienteTarjeta = ({
             <span
               className={`${styles.badge} ${styles[`badge${cita.estado}`]}`}
             >
-              {cita.estado === 'confirmada' ? 'Confirmada' : 'Pendiente'}
+              {cita.estado === "confirmada" ? "confirmada" : "pendiente"}
             </span>
           </div>
 
           <div className={styles.infoDoctor}>
             <img
               src={cita.doctor.imagen}
-              alt={cita.doctor.nombre}
+              alt={cita.doctor.name}
               className={styles.imagenDoctor}
             />
             <div className={styles.datosDoctor}>
-              <h3 className={styles.nombreDoctor}>{cita.doctor.nombre}</h3>
+              <h3 className={styles.nombreDoctor}>{cita.doctor.name}</h3>
               <p className={styles.especialidadDoctor}>
-                {cita.doctor.especialidad}
+                {cita.doctor.specialty}
               </p>
             </div>
             {(cita.notificaciones || 0) > 0 && (
@@ -130,8 +143,8 @@ const CitaPacienteTarjeta = ({
               <RiTimeLine />
               <span>
                 {fechaCita.toLocaleTimeString([], {
-                  hour: '2-digit',
-                  minute: '2-digit',
+                  hour: "2-digit",
+                  minute: "2-digit",
                 })}
               </span>
             </div>
@@ -147,7 +160,7 @@ const CitaPacienteTarjeta = ({
         </div>
 
         {/* Panel expandible de detalles */}
-        {cita.estado === 'confirmada' && cita.instrucciones && seleccionada && (
+        {cita.estado === "confirmada" && cita.instrucciones && seleccionada && (
           <div className={styles.seccionInstrucciones}>
             <div className={styles.divisor} />
             <div className={styles.instruccionesTexto}>
@@ -157,7 +170,7 @@ const CitaPacienteTarjeta = ({
         )}
 
         <div className={styles.contenedorAcciones}>
-          {cita.estado === 'confirmada' ? (
+          {cita.estado === "confirmada" ? (
             <>
               {puedeUnirse ? (
                 <button className={styles.botonUnirse}>
@@ -174,11 +187,11 @@ const CitaPacienteTarjeta = ({
               {/* detalles */}
               <button
                 className={`${styles.botonDetalle} ${
-                  seleccionada ? styles.activo : ''
+                  seleccionada ? styles.activo : ""
                 }`}
                 onClick={onSeleccionar}
               >
-                {seleccionada ? 'Ocultar detalles' : 'Ver detalles'}
+                {seleccionada ? "Ocultar detalles" : "Ver detalles"}
               </button>
             </>
           ) : (
@@ -203,7 +216,7 @@ const CitaPacienteTarjeta = ({
         onSubmit={handleReprogramar}
       />
     </>
-  )
-}
+  );
+};
 
-export default CitaPacienteTarjeta
+export default CitaPacienteTarjeta;

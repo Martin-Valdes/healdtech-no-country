@@ -17,7 +17,8 @@ interface RegisterRequest {
 interface AuthResponse {
   
   email: string,
-  rol: string
+  rol: string,
+  id: string
 }
 
 const useMock = import.meta.env.VITE_USE_MOCK === "true";
@@ -26,6 +27,7 @@ console.log('apiUrl', import.meta.env.VITE_API_URL, import.meta.env.VITE_USE_MOC
 export const authApi = {
   login: async (request: LoginRequest): Promise<AuthResponse> => {
     try {
+    
       if (useMock) {
         console.log("Using mock service");
         return mockLoginService.login(request.email, request.password);
@@ -39,10 +41,9 @@ export const authApi = {
       const responseGet = await api.get<AuthResponse>(
         `/healdtech/session/protected`,
       );
-      console.log(responseGet);
-  
-      const { email, rol } = responseGet.data;
-      return  {email, rol} ;
+      const { email, rol, id } = responseGet.data;
+      return  {email, rol, id};
+      
     } catch (error) {
       console.error("Login failed:", error);
       throw error;

@@ -24,8 +24,8 @@ export const Login = () => {
       
       const response = await authApi.login({ email, password });
       
-      login(response.email, response.rol);
-     console.log(response.rol)
+      login(response.email, response.rol, response.id);
+    
       if (response.rol === 'admin') {
         return navigate('/app-administrador');
       } else if (response.rol === 'doctor') {

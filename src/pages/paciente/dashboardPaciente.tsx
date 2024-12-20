@@ -20,12 +20,14 @@ import { AppointmentDetailsModal } from '../../components/AppointmentDetailsModa
 import { MedicationDetailsModal } from '../../components/MedicationDetailsModal';
 import useModal from '../../hooks/useModal';
 
+
 const DashboardPaciente = () => {
   const navigate = useNavigate();
-  const { user } = useAuthStore();
+  const { email, id } = useAuthStore();
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<PatientStats>({
-    totalAppointments: 0,
+    id: "",
+    totalConsult: 0,
     activePrescriptions: 0,
     newResults: 0,
     healthScore: 0,
@@ -54,11 +56,6 @@ const DashboardPaciente = () => {
       setSelectedAppointment(appointment);
       openModal();
     }
-  };
-
-  const closeAppointmentModal = () => {
-    setSelectedAppointment(null);
-    closeModal();
   };
 
   const handleMedicationClick = (medication: Medication) => {
@@ -114,10 +111,13 @@ const DashboardPaciente = () => {
     }
   };
 
-  const handleCancelAppointment = async (appointmentId: number) => {
+  const handleCancelAppointment = async (appointmentId: string, data: any) => {
+
+    data= "canceled"
+
     try {
       // Aquí iría la lógica para cancelar la cita
-      await patientDashboardApi.cancelAppointment(appointmentId);
+      await patientDashboardApi.cancelAppointment(appointmentId, data);
       
       // Actualizar la lista de citas
       const updatedAppointments = appointments.filter(app => app.id !== appointmentId);
@@ -126,7 +126,7 @@ const DashboardPaciente = () => {
       // Actualizar las estadísticas
       setStats(prev => ({
         ...prev,
-        totalAppointments: prev.totalAppointments - 1
+        totalAppointments: prev.totalConsult - 1
       }));
     } catch (error) {
       console.error('Error al cancelar la cita:', error);
@@ -134,30 +134,22 @@ const DashboardPaciente = () => {
     }
   };
 
-  useEffect(() => {
-    const loadDashboardData = async () => {
-      try {
-        setLoading(true);
-        const [statsData, appointmentsData, medicationsData, healthTipsData] = await Promise.all([
-          patientDashboardApi.getPatientStats(),
-          patientDashboardApi.getPatientAppointments(),
-          patientDashboardApi.getPatientMedications(),
-          patientDashboardApi.getHealthTips(),
-        ]);
+useEffect(() => {
+  if (!id) return; // Evita llamadas innecesarias si no hay ID
+  const loadPatientStats = async () => {
+    try {
+      setLoading(true);
+      const statsData = await patientDashboardApi.getPatientStats(id);
+      setStats(statsData);
+    } catch (error) {
+      console.error("Error loading patient stats:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  loadPatientStats();
+}, [id]);
 
-        setStats(statsData);
-        setAppointments(appointmentsData);
-        setMedications(medicationsData);
-        setHealthTips(healthTipsData);
-      } catch (error) {
-        console.error('Error loading dashboard data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadDashboardData();
-  }, []);
 
   if (loading) {
     return (
@@ -173,7 +165,7 @@ const DashboardPaciente = () => {
       {/* Header */}
       <header className={styles.header}>
         <div className={styles.headerContent}>
-          <h1 className={styles.title}>¡Bienvenido, {user?.username}! 👋</h1>
+          <h1 className={styles.title}>¡Bienvenido, {email}! 👋</h1>
           <p className={styles.subtitle}>
             Mantén el control de tu salud y bienestar. Estamos aquí para ayudarte.
           </p>
@@ -210,7 +202,7 @@ const DashboardPaciente = () => {
             <RiCalendarCheckLine />
           </div>
           <div className={styles.statInfo}>
-            <div className={styles.statValue}>{stats.totalAppointments}</div>
+            <div className={styles.statValue}>{stats.totalConsult}</div>
             <div className={styles.statLabel}>Citas Programadas</div>
             <div className={styles.statTrend}>+2 esta semana</div>
           </div>
@@ -269,8 +261,8 @@ const DashboardPaciente = () => {
                   </div>
                   <div className={styles.appointmentDateTime}>
                     <RiTimeLine />
-                    {appointment.datetime.toLocaleDateString()} - {" "}
-                    {appointment.datetime.toLocaleTimeString([], {
+                    {appointment.time.toLocaleDateString()} - {" "}
+                    {appointment.time.toLocaleTimeString([], {
                       hour: "2-digit",
                       minute: "2-digit",
                     })}

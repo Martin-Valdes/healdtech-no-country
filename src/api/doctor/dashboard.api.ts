@@ -2,6 +2,7 @@ import { DoctorDashboardService, mockDoctorDashboardService } from "../../mock/d
 import api from "../interceptors";
 
 const useMock = import.meta.env.VITE_USE_MOCK === "false";
+
 export const doctorDashboardApi: DoctorDashboardService = {
     getDoctorStats: async ()=>{
     if (useMock) {

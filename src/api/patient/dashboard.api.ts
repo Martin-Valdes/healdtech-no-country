@@ -1,26 +1,28 @@
 import { PatientDashboardService } from "../../types/patient.types";
 import { mockPatientDashboardService } from "../../mock/patient/dashboard.mock";
+
+
 import api from "../interceptors";
 
-const useMock = import.meta.env.VITE_USE_MOCK === "false";
-
-const API_URL = 'https://your-api-url.com'; // You should replace this with your actual API URL
-const getToken = () => 'your-token'; // You should replace this with your actual token getter
+const useMock = import.meta.env.VITE_USE_MOCK === "true";
 
 export const patientDashboardApi: PatientDashboardService = {
-  getPatientStats: async () => {
+  getPatientStats: async (id: string) => {
     if (useMock) {
-      return mockPatientDashboardService.getPatientStats();
+      return mockPatientDashboardService.getPatientStats(id);
     }
-    const response = await api.get("/patient/dashboard/stats");
+    const response = await api.get(`/healdtech/consultas/consult/${id}`);
     return response.data;
   },
-
-  getPatientAppointments: async () => {
+  
+  getPatientAppointments: async (id: string) => {
     if (useMock) {
-      return mockPatientDashboardService.getPatientAppointments();
+      return mockPatientDashboardService.getPatientAppointments(id);
     }
-    const response = await api.get("/patient/dashboard/appointments");
+    
+    const response = await api.get(`/healdtech/consultas/getAllByUser/${id}`);
+    console.log(response)
+
     return response.data;
   },
 
@@ -29,6 +31,7 @@ export const patientDashboardApi: PatientDashboardService = {
       return mockPatientDashboardService.getPatientMedications();
     }
     const response = await api.get("/patient/dashboard/medications");
+    
     return response.data;
   },
 
@@ -40,13 +43,13 @@ export const patientDashboardApi: PatientDashboardService = {
     return response.data;
   },
 
-  cancelAppointment: async (appointmentId: number): Promise<void> => {
+  cancelAppointment: async (appointmentId: string, data: any): Promise<void> => {
     if (useMock) {
       return mockPatientDashboardService.cancelAppointment(appointmentId);
     }
-    
+      console.log(data)
     try {
-      const response = await api.post(`/appointments/${appointmentId}/cancel`);
+      const response = await api.patch(`/consultas/${appointmentId}`, ...data);
       if (!response.data) {
         throw new Error('Error al cancelar la cita');
       }

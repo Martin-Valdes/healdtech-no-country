@@ -11,7 +11,7 @@ const ProtectedRoute = ({
   children,
   allowedRoles = [],
 }: ProtectedRouteProps) => {
-  const { isAuthenticated,rol } = useAuthStore();
+  const { isAuthenticated,rol} = useAuthStore();
   const location = useLocation();
   const userRole = rol;
   
