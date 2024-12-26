@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import backgroundImg from '../assets/2dab48e71b17bd29b01469f11981c192.jpg';
-import { UserManager } from '../utils/UserManager';
 
 export const Login = () => {
   const [email, setEmail] = useState<string>('');
@@ -8,7 +7,6 @@ export const Login = () => {
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   useEffect(() => {
-    UserManager.initializeDefaultUsers();
   }, []);
 
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
@@ -19,15 +17,6 @@ export const Login = () => {
       return;
     }
 
-    const isAuthenticated = UserManager.authenticateUser(email, password);
-
-    if (isAuthenticated) {
-      alert('Inicio de sesión exitoso.');
-      setErrorMessage('');
-      // Redirigir o actualizar estado aquí
-    } else {
-      setErrorMessage('Correo o contraseña incorrectos.');
-    }
   };
 
   return (

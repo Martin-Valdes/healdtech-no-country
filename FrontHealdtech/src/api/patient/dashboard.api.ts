@@ -12,6 +12,7 @@ export const patientDashboardApi: PatientDashboardService = {
       return mockPatientDashboardService.getPatientStats(id);
     }
     const response = await api.get(`/healdtech/consultas/consult/${id}`);
+  
     return response.data;
   },
   
@@ -19,11 +20,13 @@ export const patientDashboardApi: PatientDashboardService = {
     if (useMock) {
       return mockPatientDashboardService.getPatientAppointments(id);
     }
-    
-    const response = await api.get(`/healdtech/consultas/getAllByUser/${id}`);
-    console.log(response)
-
-    return response.data;
+    try {
+      const response = await api.get(`/healdtech/consultas/getAllByUser/${id}`);
+      return response.data;
+      
+    } catch (error) {
+      console.log(error)
+    }
   },
 
   getPatientMedications: async () => {
@@ -43,13 +46,12 @@ export const patientDashboardApi: PatientDashboardService = {
     return response.data;
   },
 
-  cancelAppointment: async (appointmentId: string, data: any): Promise<void> => {
+  cancelAppointment: async (appointmentId: string): Promise<void> => {
     if (useMock) {
       return mockPatientDashboardService.cancelAppointment(appointmentId);
     }
-      console.log(data)
     try {
-      const response = await api.patch(`/consultas/${appointmentId}`, ...data);
+      const response = await api.patch(`/consultas/${appointmentId}`);
       if (!response.data) {
         throw new Error('Error al cancelar la cita');
       }

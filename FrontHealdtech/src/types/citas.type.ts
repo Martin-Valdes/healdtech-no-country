@@ -1,19 +1,25 @@
 // Tipos base
 export interface Doctor {
-  id: number
-  nombre: string
-  especialidad: string
-  imagen: string
+  id: string
+  age: number
+  email: string  
+  password: string   
+  dateBirth: Date
+  address: string
+  phone: string
+  name: string
+  specialty: string
+  imagen?: string
 }
 
-export interface Cita {
-  id: number
-  fecha: Date
+export interface Cite {
+  id: string
+  date: Date
   doctor: Doctor
-  tipo: 'virtual' | 'presencial'
-  estado: 'confirmada' | 'pendiente'
-  descripcion: string
-  ubicacion: string
+  type: 'virtual' | 'presencial'
+  state: 'confirmada' | 'pendiente'
+  description: string
+  ubicacion?: string
   notificaciones?: number
   sintomas?: string
   instrucciones?: string
@@ -22,50 +28,64 @@ export interface Cita {
 
 // DTOs para operaciones
 export interface CreateCitaDTO {
-  fecha: Date
-  doctor: Doctor
-  tipo: 'virtual' | 'presencial'
-  descripcion: string
-  ubicacion: string
-}
-
-export interface CitaActualizada {
-  id: number
-  fecha: Date
-  doctor: Doctor
-  tipo: 'virtual' | 'presencial'
-  estado: 'pendiente'
-  descripcion: string
-  ubicacion: string
-}
-
-export interface UpdateCitaDTO {
-  id: number
+  id: string
   fecha?: Date
-  estado?: 'confirmada' | 'pendiente'
-  descripcion?: string
+  doctor: Doctor
+  tipo: 'virtual' | 'presencial'
+  descripcion: string
+  ubicacion: string
+}
+
+export interface UpdatedCitaDTO {
+  id: string
+  fecha: Date
+  doctor: Doctor
+  tipo: 'virtual' | 'presencial'
+  estado: 'pendiente' | 'cancelada'
+  descripcion: string
+  ubicacion: string
 }
 
 // Tipos para formularios
 export interface FormData {
   tipo: 'virtual' | 'presencial'
-  especialidad: string
-  doctor: Doctor | undefined
-  fecha: string
+  specialty: string
+  doctor?: any | undefined
+  date: string
   hora: string
   motivo: string
   ubicacion: string
 }
 
-export interface NuevaCita extends Omit<Cita, 'id' | 'notificaciones' | 'sintomas' | 'instrucciones' | 'archivosAdjuntos'> {
+export interface ConsejosSauld {
+  especialidad: string
+  doctor?: Doctor | undefined
+  fecha: Date
+  hora: string
+  consejos: string
+}
+
+export interface NuevaCita extends Omit<Cite, 'id' | 'notificaciones' | 'sintomas' | 'instrucciones' | 'archivosAdjuntos'> {
   estado: 'pendiente'
 }
 
-// Tipos para estadísticas
-export interface EstadisticasCitas {
+export interface EstadisticasDetalle {
   total: number
   virtuales: number
   presenciales: number
+}
+
+export interface EstadisticasCitas extends EstadisticasDetalle {
   confirmadas: number
   pendientes: number
+}
+
+export interface PatientCitesService {
+  getPatientCite: (id: string) => Promise<Cite[]>;
+  getPatientAllCites: (id: string) => Promise<Cite[]>;
+  getPatientMedications: () => Promise<FormData>;
+  getNewCite: (id: string) => Promise<NuevaCita>;
+  getHealthTips: () => Promise<ConsejosSauld>;
+  updateCite: (id: string, data: any) => Promise<Cite[]>;
+  cancelCite: (appointmentId: string, data: any) => Promise<void>;
 }

@@ -1,38 +1,24 @@
 import { RiCloseFill } from "react-icons/ri";
 import  styles  from "./ReprogramarCitaModal.module.css";
 import { useState } from "react";
-import { Cita, CitaActualizada } from "../../../../types/citas.type";
+import { Cite, UpdatedCitaDTO } from "../../../../types/citas.type";
 
 interface ModalReprogramarProps {
-    cita: Cita
+    cita: Cite
     modalAbierto: boolean
     onClose: () => void
-    onSubmit: (citaActualizada: CitaActualizada) => void
   }
 
 const ReprogramarCitaModal = ({ 
     cita, 
     modalAbierto, 
     onClose, 
-    onSubmit 
   }: ModalReprogramarProps) => {
-    const fechaCita = new Date(cita.fecha)
-    const [formData, setFormData] = useState({
-      tipo: cita.tipo,
-      fecha: fechaCita.toISOString().split('T')[0],
-      hora: fechaCita.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }),
-      motivo: cita.descripcion
-    })
+    const fechaCita = new Date(cita.date)
+    
   
     const handleSubmit = (e: React.FormEvent) => {
-      e.preventDefault()
-      const citaActualizada: CitaActualizada = {
-          ...cita,
-          fecha: new Date(`${formData.fecha}T${formData.hora}`),
-          estado: 'pendiente',
-          descripcion: formData.motivo  // Asegurarnos de usar el motivo actualizado
-      }
-      onSubmit(citaActualizada)
+      
       onClose()
   }
   
@@ -53,8 +39,7 @@ const ReprogramarCitaModal = ({
                 <label>Nueva Fecha</label>
                 <input
                   type="date"
-                  value={formData.fecha}
-                  onChange={(e) => setFormData({ ...formData, fecha: e.target.value })}
+               
                   min={new Date().toISOString().split('T')[0]}
                   required
                 />
@@ -64,8 +49,7 @@ const ReprogramarCitaModal = ({
                 <label>Nueva Hora</label>
                 <input
                   type="time"
-                  value={formData.hora}
-                  onChange={(e) => setFormData({ ...formData, hora: e.target.value })}
+              
                   required
                 />
               </div>
@@ -74,8 +58,7 @@ const ReprogramarCitaModal = ({
             <div className={styles.formGroup}>
               <label>Motivo del cambio</label>
               <textarea
-                value={formData.motivo}
-                onChange={(e) => setFormData({ ...formData, motivo: e.target.value })}
+              
                 required
                 rows={3}
               />

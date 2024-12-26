@@ -23,16 +23,17 @@ import useModal from '../../hooks/useModal';
 
 const DashboardPaciente = () => {
   const navigate = useNavigate();
-  const { email, id } = useAuthStore();
+  const { email, id, name } = useAuthStore();
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<PatientStats>({
     id: "",
     totalConsult: 0,
+    canceledConsult: 0,
     activePrescriptions: 0,
     newResults: 0,
     healthScore: 0,
   });
-
+console.log(name)
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [medications, setMedications] = useState<Medication[]>([]);
   const [healthTips, setHealthTips] = useState<HealthTip[]>([]);
@@ -80,7 +81,6 @@ const DashboardPaciente = () => {
   };
 
   const handleHealthTipAction = (tip: HealthTip) => {
-    // Simular acción al hacer clic en un consejo de salud
     alert(`Más información sobre: ${tip.title}`);
   };
 
@@ -90,8 +90,6 @@ const DashboardPaciente = () => {
 
   const handleJoinMeeting = async (appointmentId: number) => {
     try {
-      // Aquí iría la lógica para conectarse a la consulta virtual
-      // Por ejemplo, obtener el enlace de la reunión del backend
       const meetingUrl = 'https://meet.google.com/abc-defg-hij';
       window.open(meetingUrl, '_blank');
     } catch (error) {
@@ -102,8 +100,6 @@ const DashboardPaciente = () => {
 
   const handleRescheduleAppointment = async (appointmentId: number) => {
     try {
-      // Aquí iría la lógica para reprogramar la cita
-      // Por ahora solo mostraremos un mensaje
       alert('Funcionalidad de reprogramación en desarrollo');
     } catch (error) {
       console.error('Error al reprogramar la cita:', error);
@@ -111,19 +107,14 @@ const DashboardPaciente = () => {
     }
   };
 
-  const handleCancelAppointment = async (appointmentId: string, data: any) => {
-
-    data= "canceled"
+  const handleCancelAppointment = async (appointmentId: string) => {
 
     try {
-      // Aquí iría la lógica para cancelar la cita
-      await patientDashboardApi.cancelAppointment(appointmentId, data);
-      
-      // Actualizar la lista de citas
+      await patientDashboardApi.cancelAppointment(appointmentId);
+    
       const updatedAppointments = appointments.filter(app => app.id !== appointmentId);
       setAppointments(updatedAppointments);
       
-      // Actualizar las estadísticas
       setStats(prev => ({
         ...prev,
         totalAppointments: prev.totalConsult - 1
@@ -135,7 +126,7 @@ const DashboardPaciente = () => {
   };
 
 useEffect(() => {
-  if (!id) return; // Evita llamadas innecesarias si no hay ID
+  if (!id) return;
   const loadPatientStats = async () => {
     try {
       setLoading(true);
@@ -165,7 +156,7 @@ useEffect(() => {
       {/* Header */}
       <header className={styles.header}>
         <div className={styles.headerContent}>
-          <h1 className={styles.title}>¡Bienvenido, {email}! 👋</h1>
+          <h1 className={styles.title}>¡Bienvenido, {name}! 👋</h1>
           <p className={styles.subtitle}>
             Mantén el control de tu salud y bienestar. Estamos aquí para ayudarte.
           </p>
@@ -202,7 +193,7 @@ useEffect(() => {
             <RiCalendarCheckLine />
           </div>
           <div className={styles.statInfo}>
-            <div className={styles.statValue}>{stats.totalConsult}</div>
+            <div className={styles.statValue}>{stats.totalConsult - stats.canceledConsult}</div>
             <div className={styles.statLabel}>Citas Programadas</div>
             <div className={styles.statTrend}>+2 esta semana</div>
           </div>
@@ -245,11 +236,11 @@ useEffect(() => {
             {appointments.map((appointment, index) => (
               <div key={index} className={styles.appointmentCard}>
                 <div className={styles.appointmentHeader}>
-                  <span className={`${styles.appointmentType} ${styles[appointment.type]}`}>
-                    {appointment.type === 'virtual' ? '🖥 Virtual' : '🏥 Presencial'}
+                  <span className={`${styles.appointmentType} ${styles[appointment.tipo]}`}>
+                    {appointment.tipo === 'presencial' ? '🖥 virtual' : '🏥 presencial'}
                   </span>
-                  <span className={`${styles.appointmentStatus} ${styles[appointment.status]}`}>
-                    {appointment.status === 'confirmed' ? 'Confirmada' : 'Pendiente'}
+                  <span className={`${styles.appointmentStatus} ${styles[appointment.estado]}`}>
+                    {appointment.estado === 'pendiente' ? 'confirmada' : 'pendiente'}
                   </span>
                 </div>
                 <div className={styles.appointmentInfo}>
@@ -261,8 +252,8 @@ useEffect(() => {
                   </div>
                   <div className={styles.appointmentDateTime}>
                     <RiTimeLine />
-                    {appointment.time.toLocaleDateString()} - {" "}
-                    {appointment.time.toLocaleTimeString([], {
+                    {appointment.fecha.toLocaleDateString()} - {" "}
+                    {appointment.fecha.toLocaleTimeString([], {
                       hour: "2-digit",
                       minute: "2-digit",
                     })}
@@ -275,7 +266,7 @@ useEffect(() => {
                   >
                     Ver detalles
                   </button>
-                  {appointment.type === 'virtual' && (
+                  {appointment.tipo === 'virtual' && (
                     <button 
                       className={`${styles.appointmentButton} ${styles.primaryButton}`}
                       onClick={() => handleAppointmentAction(appointment, 'join')}

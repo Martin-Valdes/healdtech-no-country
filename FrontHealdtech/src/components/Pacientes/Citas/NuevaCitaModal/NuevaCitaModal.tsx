@@ -1,16 +1,10 @@
-import { useState } from 'react'
-import styles from './NuevaCitaModal.module.css'
-import {
-  RiCloseLine,
-} from 'react-icons/ri'
-// 
-import {
-  Doctor,
-  FormData,
-} from "../../../../types/citas.type"
-import {
-  doctoresMock,
-} from "../../../../mock/patient/citas.mock"
+import { useState, useEffect } from 'react';
+import { RiCloseLine } from 'react-icons/ri';
+import { FormData } from "../../../../types/citas.type";
+import { Doctor } from '../../../../types/patient.types';
+import styles from './NuevaCitaModal.module.css';
+import { doctorApi } from '../../../../api/doctor/doctors.api';
+import { all } from 'axios';
 
 interface NuevaCitaModalProps {
   modalAbierto: boolean
@@ -26,25 +20,50 @@ const NuevaCitaModal = ({
 }: NuevaCitaModalProps) => {
   const [formData, setFormData] = useState<FormData>({
     tipo: 'presencial' as const,
-    especialidad: '',
-    doctor: undefined,
-    fecha: '',
+    doctor: "",
+    specialty: '',
+    date: "",
     hora: '',
     motivo: '',
     ubicacion: '',
   })
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    onSubmit(formData)
+  useEffect(() => {
+    const searchDoctors = async () => {
+      try {
+        const allDoctors = await doctorApi.getAllDoctors();
+        setDoctors(allDoctors);
+      } catch (error) {
+        console.error('Error al cargar doctores:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    searchDoctors();
+  }, [formData.specialty]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }))
   }
-  const doctoresFiltrados = doctoresMock.filter(
-    (doctor) =>
-      !formData.especialidad || doctor.especialidad === formData.especialidad
-  )
+    
+    const handleSubmit = (e: React.FormEvent) => {
+      e.preventDefault()
+      onSubmit(formData)
+    };
 
-  if (!modalAbierto) return null
+    const doctoresFiltrados = doctors.filter(
+      (doctor) =>
+        !formData.specialty || doctor.specialty === formData.specialty
+    );
 
+    if (!modalAbierto) return null
+   
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
@@ -53,7 +72,9 @@ const NuevaCitaModal = ({
         </button>
 
         <h2 className={styles.modalTitle}>Agendar Nueva Cita</h2>
-
+        {loading ? (
+          <p>Cargando doctores...</p>
+        ) : (
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.formGroup}>
             <label>Tipo de Consulta</label>
@@ -92,57 +113,40 @@ const NuevaCitaModal = ({
           </div>
 
           <div className={styles.formGroup}>
-            {/* doctor */}
-            <label>Doctor</label>
-            <select
-              value={formData.doctor?.id?.toString() || ''}
-              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                const selectedDoctor = doctoresMock.find(
-                  (d) => d.id === Number(e.target.value)
-                )
-
-                setFormData({
-                  ...formData,
-                  doctor: selectedDoctor,
-                  especialidad: selectedDoctor?.especialidad || '',
-                  ubicacion: selectedDoctor
-                    ? `Consultorio del ${selectedDoctor.nombre}`
-                    : '',
-                })
-              }}
-              required
-            >
-              <option value="">Seleccione un doctor</option>
-              {doctoresFiltrados.map((doctor) => (
-                <option key={doctor.id} value={doctor.id}>
-                  {doctor.nombre} - {doctor.especialidad}
-                </option>
-              ))}
-            </select>
             <label>Especialidad</label>
             <select
-              value={formData.especialidad}
+              value={formData.specialty}
               onChange={(e) =>
-                setFormData({ ...formData, especialidad: e.target.value })
+                setFormData({ ...formData, specialty: e.target.value })
               }
               required
             >
               <option value="">Seleccione una especialidad</option>
               <option value="Medicina General">Medicina General</option>
-              <option value="Cardiología">Cardiología</option>
-              <option value="Traumatología">Traumatología</option>
+              <option value="Cardiology">Cardiología</option>
+              <option value="Traumatologo">Traumatología</option>
               <option value="Oftalmología">Oftalmología</option>
             </select>
           </div>
-
+          <div className={styles.formGroup}>
+            <label>Doctor</label>
+            <select name="doctor" value={formData.doctor} onChange={handleChange}>
+              <option value="">Seleccione un doctor</option>
+              {doctoresFiltrados.map((doctor) => (
+                <option key={doctor.name} value={doctor.name}>
+                  {doctor.name}
+                </option>
+              ))}
+            </select>
+          </div>
           <div className={styles.formRow}>
             <div className={styles.formGroup}>
               <label>Fecha</label>
               <input
                 type="date"
-                value={formData.fecha}
+                value={formData.date}
                 onChange={(e) =>
-                  setFormData({ ...formData, fecha: e.target.value })
+                  setFormData({ ...formData, date: e.target.value })
                 }
                 min={new Date().toISOString().split('T')[0]}
                 required
@@ -193,6 +197,7 @@ const NuevaCitaModal = ({
             </button>
           </div>
         </form>
+        )}|
       </div>
     </div>
   )

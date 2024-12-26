@@ -1,14 +1,14 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import { Login } from '../pages/login2';
 
 
 interface AuthState {
   id: any | null;
   email: any | null;
   rol: string | null;
+  name: string | null;
   isAuthenticated: boolean;
-  login: (email: any, rol: string, id: any ) => void;
+  login: (email: any, rol: string, id: any, name: string) => void;
   logout: () => void;
 }
 
@@ -19,13 +19,15 @@ export const useAuthStore = create<AuthState>()(
     devtools((set) => ({
       id: null,
       email: null,
-      rol: null,  
+      rol: null,
+      name: null,
       isAuthenticated: false,
-      login: (email, rol, id) => {
+      login: (email, rol, id, name ) => {
         set({
           id:id,
           email: email,
           rol: rol,
+          name: name, 
           isAuthenticated: true,
         });
       },

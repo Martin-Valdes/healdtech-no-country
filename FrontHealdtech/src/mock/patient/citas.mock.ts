@@ -110,7 +110,7 @@ export const actualizarCitaMock = (citaData: UpdateCitaDTO): Cita[] => {
   return citasPacientesMock
 }
 
-export const cancelarCitaMock = (citaId: number): Cita[] => {
+export const cancelarCitaMock = (citaId: string): Cita[] => {
   const index = citasPacientesMock.findIndex(c => c.id === citaId)
   if (index === -1) throw new Error('Cita no encontrada')
 

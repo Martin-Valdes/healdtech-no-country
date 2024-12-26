@@ -1,18 +1,12 @@
-import { useEffect, useState } from 'react'
-import styles from './CitasPanel.module.css'
-import Spinner from './../../../components/common/Spinner/Spinner'
-// type
-import {
-  Cita,
-  FormData,
-  CitaActualizada,
-  CreateCitaDTO
-} from '../../../types/citas.type'
-// Imports de mocks
+import { useEffect, useState } from 'react';
+import styles from './CitasPanel.module.css';
+import Spinner from './../../../components/common/Spinner/Spinner';
+import { patientCitasApi } from '../../../api/patient/citas.api';
+import { Cite, CreateCitaDTO, UpdatedCitaDTO, FormData, ConsejosSauld, NuevaCita } from '../../../types/citas.type'
+import { useAuthStore } from "../../../store/useAuth";
+
 import {
   citasPacientesMock,
-  actualizarCitaMock,
-  cancelarCitaMock,
   agregarCitaMock,
 } from '../../../mock/patient/citas.mock'
 
@@ -24,47 +18,61 @@ import CitaPacienteTarjeta from '../../../components/Pacientes/Citas/CitaPacient
 
 const CitasPanel = () => {
   const [loading, setLoading] = useState(true)
-  const [citas, setCitas] = useState<Cita[]>([])
-  const [citaSeleccionada, setCitaSeleccionada] = useState<number | null>(null)
+  const [citas, setCitas] = useState<Cite[]>([])
+  const [citaSeleccionada, setCitaSeleccionada] = useState<string | null>(null)
+  const { id } = useAuthStore();
 
   useEffect(() => {
-    const cargarCitas = () => {
-      setTimeout(() => {
-        setCitas(citasPacientesMock)
-        setLoading(false)
-      }, 1000)
-    }
-    cargarCitas()
-  }, [])
+    const cargarCitas = async (id: string) => {
+      try {
+        const dataCites = await patientCitasApi.getPatientAllCites(id);
+        
+        setCitas(dataCites);
+      } catch (error) {
+        console.error('Error al cargar citas:', error);
+      } finally {
+        setLoading(false); 
+      }
+    };
+    cargarCitas(id);
+  }, [id]);
 
 //  Reprogramar la cita
-  const handleReprogramarCita = (citaActualizada: CitaActualizada) => {
-    const citasActualizadas = actualizarCitaMock({
-        id: citaActualizada.id,
-        fecha: citaActualizada.fecha,
-        estado: citaActualizada.estado,
-        descripcion: citaActualizada.descripcion
-    })
-    setCitas([...citasActualizadas])
-    if (citaSeleccionada === citaActualizada.id) {
-        setCitaSeleccionada(null)
-    }
-}
+//   const handleReprogramarCita = (citaActualized: UpdatedCitaDTO) => {
+//     const citasActualizadas = patientCitasApi.updateCite(citaActualizada){
+//         id: citaActualizes.id,
+//         fecha: citaActualizada.fecha,
+//         estado: citaActualizada.estado,
+//         descripcion: citaActualizada.descripcion
+//     })
+//     setCitas([...citasActualizadas])
+//     if (citaSeleccionada === citaActualizada.id) {
+//         setCitaSeleccionada(null)
+//     }
+// }
 //  cancelar cita
-  const handleCancelarCita = (citaId: number) => {
-    const citasActualizadas = cancelarCitaMock(citaId)
-    setCitas([...citasActualizadas]) // Forzamos re-render con nuevo array
-    
-    if (citaSeleccionada === citaId) {
-        setCitaSeleccionada(null)
+  const handleCancelarCita = async (citaId: string) => {
+
+    try {
+      const citasActualizadas = await patientCitasApi.updateCite(citaId, {  state: 'cancelada' })
+     
+      setCitas(citasActualizadas) 
+      
+      if (citaSeleccionada === citaId) {
+          setCitaSeleccionada(null)
+      }
+      
+    } catch (error) {
+      console.log(error)
     }
 }
 // nuevaCita
   const handleNuevaCita = (formData: FormData) => {
-    const fecha = new Date(`${formData.fecha}T${formData.hora}:00`) 
+    const fecha = new Date(`${formData.date}T${formData.hora}:00`) 
     
-    const nuevaCita: CreateCitaDTO = { 
-        fecha,
+    const nuevaCita: CreateCitaDTO = {
+        id: id,  
+        fecha: fecha,
         doctor: formData.doctor!,
         tipo: formData.tipo,
         descripcion: formData.motivo,
@@ -72,13 +80,13 @@ const CitasPanel = () => {
     }
     
     const citasActualizadas = agregarCitaMock(nuevaCita)
-    setCitas([...citasActualizadas]) // Forzamos re-render con nuevo array
+    setCitas([...citasActualizadas])
 }
   if (loading) {
     return <Spinner text="Cargando citas... " />
   }
   return (
-    <div className={styles.contenedor}>
+    <div className={styles.gridCitas}>
       <CitasPacientesHeader />
       <CitasPacientesStats />
       <CitasPacientesFilter
@@ -86,21 +94,23 @@ const CitasPanel = () => {
         citasOriginales={citasPacientesMock}
         onNuevaCita={handleNuevaCita}
       />
-      <div className={styles.gridCitas}>
-        {citas.map((cita) => (
-          <CitaPacienteTarjeta
-            key={cita.id}
-            cita={cita}
-            seleccionada={citaSeleccionada === cita.id}
-            onSeleccionar={() =>
-              setCitaSeleccionada(citaSeleccionada === cita.id ? null : cita.id)
-            }
-            onReprogramar={handleReprogramarCita}
-            onCancelar={handleCancelarCita}
-          />
-        ))}
-      </div>
-    </div>
+  {Array.isArray(citas) && citas.length > 0 ? (
+    citas.map((citas) => (
+      <CitaPacienteTarjeta
+        key={citas.id}
+        cita={citas}
+        seleccionada={citaSeleccionada === citas.id}
+        onSeleccionar={() =>
+          setCitaSeleccionada(citaSeleccionada === citas.id ? null : citas.id)
+        }
+        onCancelar={handleCancelarCita}
+      />
+    ))
+  ) : (
+    <p>No hay citas disponibles.</p>
+  )}
+</div>
+
   )
 }
 

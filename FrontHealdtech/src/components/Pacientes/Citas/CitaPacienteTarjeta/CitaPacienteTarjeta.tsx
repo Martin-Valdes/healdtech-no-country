@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   RiVideoLine,
   RiHospitalLine,
@@ -9,87 +9,29 @@ import {
   RiFileList3Line,
   RiCalendarEventLine,
 } from "react-icons/ri";
-import { Appointment } from "../../../../types/patient.types";
-import { useAuthStore } from "../../../../store/useAuth";
-import { patientDashboardApi } from "../../../../api/patient/dashboard.api";
-import { Cita, CitaActualizada } from "../../../../types/citas.type";
+import { Cite, UpdatedCitaDTO } from "../../../../types/citas.type";
 import ReprogramarCitaModal from "../ReprogramarCitaModal/ReprogramarCitaModal";
 
 import styles from "./CitaPacienteTarjeta.module.css";
 
 interface TarjetaCitaProps {
-  cita: Appointment;
+  cita: Cite;
   seleccionada: boolean;
   onSeleccionar: () => void;
-  onReprogramar: (citaActualizada: CitaActualizada) => void;
-  onCancelar: (citaId: number) => void;
+  onCancelar: (citaId: string) => void;
 }
 
 const CitaPacienteTarjeta = ({
   cita,
   seleccionada,
   onSeleccionar,
-  onReprogramar,
   onCancelar,
 }: TarjetaCitaProps) => {
-  // variables
   const [modalAbierto, setModalAbierto] = useState(false);
-  const [puedeUnirse, setPuedeUnirse] = useState(false);
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
-  const { id } = useAuthStore();
+  const fechaCita = new Date(cita.date);
 
-  const fechaCita = new Date(cita.fecha);
-  // Función para verificar el tiempo
-  const verificarTiempoCita = () => {
-    const ahora = new Date();
-    // Obtener tiempo en minutos para ambas fechas
-    const tiempoActual = ahora.getHours() * 60 + ahora.getMinutes();
-    const tiempoCita = fechaCita.getHours() * 60 + fechaCita.getMinutes();
 
-    // Verificar si es el mismo día
-    const esMismoDia =
-      ahora.getDate() === fechaCita.getDate() &&
-      ahora.getMonth() === fechaCita.getMonth() &&
-      ahora.getFullYear() === fechaCita.getFullYear();
 
-    // Diferencia en minutos
-    const diferenciaMinutos = Math.abs(tiempoCita - tiempoActual);
-
-    // Permitir unirse 5 minutos antes y hasta 20 minutos después
-    return esMismoDia && diferenciaMinutos <= 20;
-  };
-  // Función para cancelar cita
-  const handleCancelar = (id) => {
-    onCancelar(cita.id);
-  };
-
-  // reprogramar cita
-  const handleReprogramar = (citaActualizada: CitaActualizada) => {
-    if (onReprogramar) {
-      onReprogramar(citaActualizada);
-    }
-  };
-  useEffect(() => {
-    // Verificación inicial
-
-    const dataCites = patientDashboardApi.getPatientAppointments(id);
-
-    console.log(dataCites);
-    setAppointments(dataCites);
-
-    setPuedeUnirse(verificarTiempoCita());
-
-    // Actualizar cada minuto
-    const interval = setInterval(() => {
-      setPuedeUnirse(verificarTiempoCita());
-    }, 60000);
-
-    // Limpiar intervalo
-    return () => clearInterval(interval);
-    //
-  }, [cita.date]);
-
-  console.log(cita);
   return (
     <>
       <div
@@ -99,8 +41,8 @@ const CitaPacienteTarjeta = ({
       >
         <div className={styles.contenidoCita}>
           <div className={styles.cabeceraTarjeta}>
-            <span className={`${styles.badge} ${styles[`badge${cita.tipo}`]}`}>
-              {cita.tipo === "virtual" ? (
+            <span className={`${styles.badge} ${styles[`badge${cita.state}`]}`}>
+              {cita.type === "virtual" ? (
                 <span className={styles.textoIcono}>
                   <RiVideoLine /> Virtual
                 </span>
@@ -110,10 +52,8 @@ const CitaPacienteTarjeta = ({
                 </span>
               )}
             </span>
-            <span
-              className={`${styles.badge} ${styles[`badge${cita.estado}`]}`}
-            >
-              {cita.estado === "confirmada" ? "confirmada" : "pendiente"}
+            <span className={`${styles.badge} ${styles[`badge${cita.type}`]}`}>
+              {cita.type === "virtual" ? "precential" : "virtual"}
             </span>
           </div>
 
@@ -154,13 +94,13 @@ const CitaPacienteTarjeta = ({
             </div>
             <div className={styles.itemDetalle}>
               <RiInformationLine />
-              <span>{cita.descripcion}</span>
+              <span>{cita.description}</span>
             </div>
           </div>
         </div>
 
         {/* Panel expandible de detalles */}
-        {cita.estado === "confirmada" && cita.instrucciones && seleccionada && (
+        {cita.state === "confirmada" && cita.instrucciones && seleccionada && (
           <div className={styles.seccionInstrucciones}>
             <div className={styles.divisor} />
             <div className={styles.instruccionesTexto}>
@@ -170,20 +110,8 @@ const CitaPacienteTarjeta = ({
         )}
 
         <div className={styles.contenedorAcciones}>
-          {cita.estado === "confirmada" ? (
+          {cita.state === "confirmada" ? (
             <>
-              {puedeUnirse ? (
-                <button className={styles.botonUnirse}>
-                  <RiVideoLine /> Unirse ahora
-                </button>
-              ) : (
-                <button
-                  className={styles.botonReprogramar}
-                  onClick={() => setModalAbierto(true)}
-                >
-                  <RiCalendarEventLine /> Reprogramar
-                </button>
-              )}
               {/* detalles */}
               <button
                 className={`${styles.botonDetalle} ${
@@ -196,7 +124,10 @@ const CitaPacienteTarjeta = ({
             </>
           ) : (
             <>
-              <button className={styles.botonCancelar} onClick={handleCancelar}>
+              <button
+                className={styles.botonCancelar}
+                onClick={() => onCancelar(cita.id)}
+              >
                 Cancelar
               </button>
               <button
@@ -213,7 +144,7 @@ const CitaPacienteTarjeta = ({
         cita={cita}
         modalAbierto={modalAbierto}
         onClose={() => setModalAbierto(false)}
-        onSubmit={handleReprogramar}
+      
       />
     </>
   );

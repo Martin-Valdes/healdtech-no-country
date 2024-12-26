@@ -10,9 +10,9 @@ interface AppointmentDetailsModalProps {
   isOpen: boolean;
   onClose: () => void;
   appointment: Appointment | null;
-  onJoinMeeting?: (appointmentId: number) => void;
-  onReschedule?: (appointmentId: number) => void;
-  onCancel?: (appointmentId: number) => void;
+  onJoinMeeting?: (appointmentId: string) => void;
+  onReschedule?: (appointmentId: string) => void;
+  onCancel?: (appointmentId: string) => void;
 }
 
 const customStyles = {
@@ -88,7 +88,7 @@ export const AppointmentDetailsModal = ({
       try {
         setIsLoading(true);
         if (onCancel) {
-          await onCancel(appointment.id);
+           onCancel(appointment.id);
           onClose();
         } else {
           // Comportamiento por defecto
@@ -116,8 +116,8 @@ export const AppointmentDetailsModal = ({
 
       <div className={styles.modalHeader}>
         <h2>Detalles de la Cita</h2>
-        <span className={`${styles.appointmentType} ${styles[appointment.type]}`}>
-          {appointment.type === 'virtual' ? '🖥 Virtual' : '🏥 Presencial'}
+        <span className={`${styles.appointmentType} ${styles[appointment.tipo]}`}>
+          {appointment.tipo === 'virtual' ? '🖥 Virtual' : '🏥 Presencial'}
         </span>
       </div>
 
@@ -144,16 +144,12 @@ export const AppointmentDetailsModal = ({
             <div>
               <h3>Fecha y Hora</h3>
               <p>
-                {new Date(appointment.datetime).toLocaleDateString()} - {" "}
-                {new Date(appointment.datetime).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit"
-                })}
+                
               </p>
             </div>
           </div>
 
-          {appointment.type === 'presencial' && (
+          {appointment.tipo === 'presencial' && (
             <div className={styles.infoItem}>
               <RiMapPinLine />
               <div>
@@ -168,7 +164,7 @@ export const AppointmentDetailsModal = ({
           <h3>Notas Importantes</h3>
           <ul>
             <li>Por favor, llegue 10 minutos antes de su cita</li>
-            {appointment.type === 'virtual' ? (
+            {appointment.tipo === 'virtual' ? (
               <>
                 <li>Asegúrese de tener una conexión estable a internet</li>
                 <li>Tenga su cámara y micrófono listos</li>
@@ -184,7 +180,7 @@ export const AppointmentDetailsModal = ({
       </div>
 
       <div className={styles.modalFooter}>
-        {appointment.type === 'virtual' && (
+        {appointment.tipo === 'virtual' && (
           <button 
             className={styles.joinButton}
             onClick={handleJoinMeeting}

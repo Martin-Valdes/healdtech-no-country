@@ -1,10 +1,12 @@
 export interface Doctor {
-  name: string;
-  specialty: string;
+  id: string
+  name: string
+  specialty: string
+  imagen?: string
 }
 
 export interface Appointment {
-  id: number;
+  id: string;
   fecha: Date;
   doctor: Doctor;
   tipo: "virtual" | "presencial";
@@ -18,7 +20,7 @@ export interface Appointment {
 }
 
 export interface Medication {
-  id: number;
+  id: string;
   name: string;
   dosage: string;
   frequency: string;
@@ -27,7 +29,7 @@ export interface Medication {
 }
 
 export interface HealthTip {
-  id: number;
+  id: string;
   icon: string;
   title: string;
   description: string;
@@ -36,6 +38,7 @@ export interface HealthTip {
 export interface PatientStats {
   id: string;
   totalConsult: number;
+  canceledConsult: number;
   activePrescriptions: number;
   newResults: number;
   healthScore: number;
@@ -46,5 +49,5 @@ export interface PatientDashboardService {
   getPatientAppointments: (id: string) => Promise<Appointment[]>;
   getPatientMedications: () => Promise<Medication[]>;
   getHealthTips: () => Promise<HealthTip[]>;
-  cancelAppointment: (appointmentId: string, data: any) => Promise<void>;
+  cancelAppointment: (appointmentId: string) => Promise<void>;
 }
