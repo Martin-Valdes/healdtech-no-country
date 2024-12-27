@@ -5,7 +5,7 @@ const DoctorModel = require("../models/doctorModel");
 exports.createConsultation = async (req, res) => {
   try {
     const { ...rest } = req.body;
-
+    console.log(req.body)
     const createConsultation = await ConsultationModel.create({
       ...rest,
     });
@@ -157,10 +157,10 @@ exports.getAllConsult = async (req, res) => {
 exports.findAllConsultationsByUser = async (req, res) => {
   try {
     const { id } = req.params;
+    
     if (!id) {
       return res.status(400).json({ error: "El ID del usuario es requerido." });
     }
-    console.log(id)
     const consultations = await ConsultationModel.findAll({
       where: { patientId: id },
       include: [
@@ -175,7 +175,7 @@ exports.findAllConsultationsByUser = async (req, res) => {
     if (!consultations || consultations.length === 0) {
       return res.status(404).json({ message: "No se encontraron consultas para este usuario." });
     }
-console.log(consultations)
+    console.log(consultations)
     return res.status(200).json({data:consultations});
   } catch (err) {
     console.error("Error al buscar consultas:", err);
