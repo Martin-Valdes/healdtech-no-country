@@ -12,10 +12,12 @@ const CitasPacientesStats = () => {
   let virtual;
   let presencial;
   let total;
+  let activeConsults
 
   const [stats, setStats] = useState<PatientStats>({
     id: "",
     totalConsult: 0,
+    canceledConsult: 0,
     activePrescriptions: 0,
     newResults: 0,
     healthScore: 0,
@@ -37,14 +39,18 @@ const CitasPacientesStats = () => {
   }, [id]);
 
   if (Array.isArray(stats)) {
-    virtual = stats.filter((item) => item.type === "virtual").length;
+    virtual = stats.filter((item) => item.type === "virtual" && item.state === "send").length;
   }
   if (Array.isArray(stats)) {
-    presencial = stats.filter((item) => item.type === "presencial").length;
+    presencial = stats.filter((item) => item.type === "presencial" && item.state === "send").length;
   }
   if (Array.isArray(stats)) {
     total = stats.length;
   }
+  if (Array.isArray(stats)) {
+    activeConsults = stats.filter((item) => item.state === "send").length;
+  }
+
   return (
     <div className={styles.contenedorEstadisticas}>
       <div className={`${styles.cardEstadistica} ${styles.cardAzul}`}>
@@ -52,7 +58,7 @@ const CitasPacientesStats = () => {
           <RiCalendarLine className={styles.icono} />
         </div>
         <div className={styles.estadisticaInfo}>
-          <h3>{total}</h3>
+          <h3>{activeConsults}</h3>
           <p className={styles.label}>Total Citas</p>
         </div>
       </div>

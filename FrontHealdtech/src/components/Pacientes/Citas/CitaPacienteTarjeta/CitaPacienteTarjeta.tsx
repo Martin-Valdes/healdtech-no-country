@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   RiVideoLine,
   RiHospitalLine,
@@ -21,6 +21,7 @@ interface TarjetaCitaProps {
   onCancelar: (citaId: string) => void;
 }
 
+
 const CitaPacienteTarjeta = ({
   cita,
   seleccionada,
@@ -29,9 +30,14 @@ const CitaPacienteTarjeta = ({
 }: TarjetaCitaProps) => {
   const [modalAbierto, setModalAbierto] = useState(false);
   const fechaCita = new Date(cita.date);
+  if (!cita.doctor) {
+    return null;
+  }
 
-
-
+  const handleCancelar = () => {
+    onCancelar(cita.id)
+  }
+  
   return (
     <>
       <div
@@ -53,13 +59,13 @@ const CitaPacienteTarjeta = ({
               )}
             </span>
             <span className={`${styles.badge} ${styles[`badge${cita.type}`]}`}>
-              {cita.type === "virtual" ? "precential" : "virtual"}
+              {cita.type === "virtual" ? "virtual" : "presencial"}
             </span>
           </div>
 
           <div className={styles.infoDoctor}>
             <img
-              src={cita.doctor.imagen}
+              src={cita.doctor.name}
               alt={cita.doctor.name}
               className={styles.imagenDoctor}
             />
@@ -126,7 +132,7 @@ const CitaPacienteTarjeta = ({
             <>
               <button
                 className={styles.botonCancelar}
-                onClick={() => onCancelar(cita.id)}
+                onClick={handleCancelar}
               >
                 Cancelar
               </button>

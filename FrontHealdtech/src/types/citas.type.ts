@@ -17,7 +17,7 @@ export interface Cite {
   date: Date
   doctor: Doctor
   type: 'virtual' | 'presencial'
-  state: 'confirmada' | 'pendiente'
+  state: any
   description: string
   ubicacion?: string
   notificaciones?: number
@@ -28,12 +28,13 @@ export interface Cite {
 
 // DTOs para operaciones
 export interface CreateCitaDTO {
-  id: string
-  fecha?: Date
-  doctor: Doctor
-  tipo: 'virtual' | 'presencial'
-  descripcion: string
+  date?: Date
+  patientId: string 
+  doctorId: string 
+  type: 'virtual' | 'presencial'
+  description: string
   ubicacion: string
+  state: string
 }
 
 export interface UpdatedCitaDTO {
@@ -50,7 +51,7 @@ export interface UpdatedCitaDTO {
 export interface FormData {
   tipo: 'virtual' | 'presencial'
   specialty: string
-  doctor?: any | undefined
+  doctor: string
   date: string
   hora: string
   motivo: string
@@ -66,7 +67,9 @@ export interface ConsejosSauld {
 }
 
 export interface NuevaCita extends Omit<Cite, 'id' | 'notificaciones' | 'sintomas' | 'instrucciones' | 'archivosAdjuntos'> {
-  estado: 'pendiente'
+  id: string
+  state: string
+
 }
 
 export interface EstadisticasDetalle {
@@ -84,7 +87,7 @@ export interface PatientCitesService {
   getPatientCite: (id: string) => Promise<Cite[]>;
   getPatientAllCites: (id: string) => Promise<Cite[]>;
   getPatientMedications: () => Promise<FormData>;
-  getNewCite: (id: string) => Promise<NuevaCita>;
+  getNewCite: (data: any) => Promise<NuevaCita>;
   getHealthTips: () => Promise<ConsejosSauld>;
   updateCite: (id: string, data: any) => Promise<Cite[]>;
   cancelCite: (appointmentId: string, data: any) => Promise<void>;

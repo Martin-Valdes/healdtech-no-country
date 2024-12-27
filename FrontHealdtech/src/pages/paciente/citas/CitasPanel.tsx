@@ -18,16 +18,25 @@ import CitaPacienteTarjeta from '../../../components/Pacientes/Citas/CitaPacient
 
 const CitasPanel = () => {
   const [loading, setLoading] = useState(true)
-  const [citas, setCitas] = useState<Cite[]>([])
+  const [citas, setCitas] = useState<NuevaCita[]>([])
+  const [canceledCita, setCanceledCita] = useState<Cite[]>([]) 
+  const [activeCitas, setActiveCitas] = useState<Cite[]>([])
   const [citaSeleccionada, setCitaSeleccionada] = useState<string | null>(null)
+  const [refresh, setRefresh] = useState(false);
   const { id } = useAuthStore();
 
   useEffect(() => {
     const cargarCitas = async (id: string) => {
       try {
         const dataCites = await patientCitasApi.getPatientAllCites(id);
-        
         setCitas(dataCites);
+    
+        const citesCanceled = dataCites.filter((cita) => cita.state === 'cancelada');
+        setCanceledCita(citesCanceled);
+
+        const citesActive = dataCites.filter((cita) => cita.state !== 'cancelada');
+        setActiveCitas(citesActive);
+        
       } catch (error) {
         console.error('Error al cargar citas:', error);
       } finally {
@@ -35,8 +44,8 @@ const CitasPanel = () => {
       }
     };
     cargarCitas(id);
-  }, [id]);
-
+  }, [ refresh ]);
+  
 //  Reprogramar la cita
 //   const handleReprogramarCita = (citaActualized: UpdatedCitaDTO) => {
 //     const citasActualizadas = patientCitasApi.updateCite(citaActualizada){
@@ -51,40 +60,43 @@ const CitasPanel = () => {
 //     }
 // }
 //  cancelar cita
-  const handleCancelarCita = async (citaId: string) => {
-
-    try {
-      const citasActualizadas = await patientCitasApi.updateCite(citaId, {  state: 'cancelada' })
-     
-      setCitas(citasActualizadas) 
-      
-      if (citaSeleccionada === citaId) {
-          setCitaSeleccionada(null)
-      }
-      
-    } catch (error) {
-      console.log(error)
+const handleCancelarCita = async (citaId: string) => {
+  try {
+    const response = await patientCitasApi.updateCite(citaId, { state: 'cancelada' });
+    if (!response) {
+      setCitas((prevCitas) => prevCitas.filter((cita) => cita.id !== citaId));
+    } else {
+      console.error('Error al cancelar la cita:', response);
     }
-}
+  } catch (error) {
+    console.error('Error al cancelar la cita:', error);
+  }
+};
 // nuevaCita
-  const handleNuevaCita = (formData: FormData) => {
+  const handleNuevaCita = async (formData: FormData) => {
     const fecha = new Date(`${formData.date}T${formData.hora}:00`) 
     
     const nuevaCita: CreateCitaDTO = {
-        id: id,  
-        fecha: fecha,
-        doctor: formData.doctor!,
-        tipo: formData.tipo,
-        descripcion: formData.motivo,
-        ubicacion: formData.ubicacion
+        date: fecha,
+        patientId: id, 
+        doctorId: formData.doctor,
+        type: formData.tipo,
+        description: formData.motivo,
+        ubicacion: formData.ubicacion,
+        state: 'activa'
     }
+   try {
+    const response = await patientCitasApi.getNewCite(nuevaCita)
+    setRefresh((prev) => !prev);
+    setCitas([...citas, response]) 
+   } catch (error) {
     
-    const citasActualizadas = agregarCitaMock(nuevaCita)
-    setCitas([...citasActualizadas])
+   }
 }
   if (loading) {
     return <Spinner text="Cargando citas... " />
   }
+
   return (
     <div className={styles.gridCitas}>
       <CitasPacientesHeader />
@@ -95,7 +107,7 @@ const CitasPanel = () => {
         onNuevaCita={handleNuevaCita}
       />
   {Array.isArray(citas) && citas.length > 0 ? (
-    citas.map((citas) => (
+    activeCitas.map((citas) => (
       <CitaPacienteTarjeta
         key={citas.id}
         cita={citas}

@@ -3,9 +3,10 @@ import { handleApiError } from "../err/errorhandler";
 import api from "../interceptors";
 
 export const patientCitasApi: PatientCitesService = {
-  getNewCite: async (id) => {
+  getNewCite: async ( data: any) => {
     try {
-      const response = await api.get(`/healdtech/consultas/consult/${id}`);
+      const response = await api.post(`/healdtech/consultas`, data);
+  
       return response.data;
     } catch (error) {
       return handleApiError(error);
@@ -25,6 +26,7 @@ export const patientCitasApi: PatientCitesService = {
   getPatientAllCites: async (id: string) => {
     try {
       const response = await api.get(`/healdtech/consultas/getAllByUser/${id}`);
+     
       return response.data;
     } catch (error) {
       return handleApiError(error);

@@ -133,7 +133,7 @@ const NuevaCitaModal = ({
             <select name="doctor" value={formData.doctor} onChange={handleChange}>
               <option value="">Seleccione un doctor</option>
               {doctoresFiltrados.map((doctor) => (
-                <option key={doctor.name} value={doctor.name}>
+                <option key={doctor.id} value={doctor.id}>
                   {doctor.name}
                 </option>
               ))}
