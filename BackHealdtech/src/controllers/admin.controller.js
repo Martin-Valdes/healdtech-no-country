@@ -127,7 +127,6 @@ exports.deleteAdmin = async (req, res) => {
 exports.findAllDoctors = async (req, res) => {
     try {
         const allDoctors = await doctorModel.findAll();
-        console.log(allDoctors)
         return res.json({ message: 'Todos los doctores.', data: allDoctors });
     } catch (err) {
         return res.status(500).json({ error: 'Error al buscar los doctores.', details: err.message });

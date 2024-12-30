@@ -6,8 +6,7 @@ import { PatientStats } from "../../../../types/patient.types";
 import { patientDashboardApi } from "../../../../api/patient/dashboard.api";
 
 const CitasPacientesStats = () => {
-  // Calcular estadísticas actuales
-
+  
   const { id } = useAuthStore();
   let virtual;
   let presencial;
@@ -28,7 +27,6 @@ const CitasPacientesStats = () => {
     const loadPatientStats = async () => {
       try {
         const statsData = await patientDashboardApi.getPatientAppointments(id);
-
         setStats(statsData);
       } catch (error) {
         console.error("Error loading patient stats:", error);
@@ -39,16 +37,16 @@ const CitasPacientesStats = () => {
   }, [id]);
 
   if (Array.isArray(stats)) {
-    virtual = stats.filter((item) => item.type === "virtual" && item.state === "send").length;
+    virtual = stats.filter((item) => item.type === "virtual" && item.state === "activa").length;
   }
   if (Array.isArray(stats)) {
-    presencial = stats.filter((item) => item.type === "presencial" && item.state === "send").length;
+    presencial = stats.filter((item) => item.type === "presencial" && item.state === "activa").length;
   }
   if (Array.isArray(stats)) {
     total = stats.length;
   }
   if (Array.isArray(stats)) {
-    activeConsults = stats.filter((item) => item.state === "send").length;
+    activeConsults = stats.filter((item) => item.state === "activa").length;
   }
 
   return (

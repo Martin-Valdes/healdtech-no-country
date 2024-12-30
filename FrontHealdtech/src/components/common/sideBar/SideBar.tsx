@@ -60,7 +60,7 @@ const Sidebar = () => {
           </li>
           {/* fin - Panel Principal*/}
           <li className="nav-item">
-            <NavLinkItem to="mis-citas" badge={5}>
+            <NavLinkItem to="mis-citas" badge={1}>
             {user?.role === 'doctor' ? 'Citas pendientes' : 'Mis citas'}
             </NavLinkItem>
           </li>

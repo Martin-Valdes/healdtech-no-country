@@ -46,7 +46,7 @@ export interface PatientStats {
 
 export interface PatientDashboardService {
   getPatientStats: (id: string) => Promise<PatientStats>;
-  getPatientAppointments: (id: string) => Promise<Appointment[]>;
+  getPatientAppointments: (id: string) => Promise<PatientStats>;
   getPatientMedications: () => Promise<Medication[]>;
   getHealthTips: () => Promise<HealthTip[]>;
   cancelAppointment: (appointmentId: string) => Promise<void>;

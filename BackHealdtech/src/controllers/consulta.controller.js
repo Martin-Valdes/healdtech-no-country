@@ -5,7 +5,7 @@ const DoctorModel = require("../models/doctorModel");
 exports.createConsultation = async (req, res) => {
   try {
     const { ...rest } = req.body;
-    console.log(req.body)
+    
     const createConsultation = await ConsultationModel.create({
       ...rest,
     });
@@ -175,7 +175,6 @@ exports.findAllConsultationsByUser = async (req, res) => {
     if (!consultations || consultations.length === 0) {
       return res.status(404).json({ message: "No se encontraron consultas para este usuario." });
     }
-    console.log(consultations)
     return res.status(200).json({data:consultations});
   } catch (err) {
     console.error("Error al buscar consultas:", err);
